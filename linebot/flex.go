@@ -383,6 +383,7 @@ type BoxComponent struct {
 	Height          string
 	CornerRadius    FlexComponentCornerRadiusType
 	BackgroundColor string `json:"backgroundColor,omitempty"`
+	BorderWidth     string `json:"borderWidth,omitempty"`
 	BorderColor     string `json:"borderColor,omitempty"`
 }
 
@@ -399,6 +400,7 @@ func (c *BoxComponent) MarshalJSON() ([]byte, error) {
 		Height          string                        `json:"height,omitempty"`
 		CornerRadius    FlexComponentCornerRadiusType `json:"cornerRadius,omitempty"`
 		BackgroundColor string                        `json:"backgroundColor,omitempty"`
+		BorderWidth     string                        `json:"borderWidth,omitempty"`
 		BorderColor     string                        `json:"borderColor,omitempty"`
 	}{
 		Type:            FlexComponentTypeBox,
@@ -411,6 +413,7 @@ func (c *BoxComponent) MarshalJSON() ([]byte, error) {
 		Height:          c.Height,
 		CornerRadius:    c.CornerRadius,
 		BackgroundColor: c.BackgroundColor,
+		BorderWidth:     c.BorderWidth,
 		BorderColor:     c.BorderColor,
 	})
 }
