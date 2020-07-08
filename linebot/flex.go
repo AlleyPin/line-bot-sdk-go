@@ -199,6 +199,34 @@ const (
 	FlexComponentAlignTypeCenter FlexComponentAlignType = "center"
 )
 
+// FlexComponentCornerRadiusType type
+type FlexComponentCornerRadiusType string
+
+// FlexComponentCornerRadius constants
+const (
+	FlexComponentCornerRadiusTypeNone FlexComponentCornerRadiusType = "none"
+	FlexComponentCornerRadiusTypeXs   FlexComponentCornerRadiusType = "xs"
+	FlexComponentCornerRadiusTypeSm   FlexComponentCornerRadiusType = "sm"
+	FlexComponentCornerRadiusTypeMd   FlexComponentCornerRadiusType = "md"
+	FlexComponentCornerRadiusTypeLg   FlexComponentCornerRadiusType = "lg"
+	FlexComponentCornerRadiusTypeXl   FlexComponentCornerRadiusType = "xl"
+	FlexComponentCornerRadiusTypeXxl  FlexComponentCornerRadiusType = "xxl"
+)
+
+// FlexComponentOffsetType type
+type FlexComponentOffsetType string
+
+// FlexComponentOffsetType constants
+const (
+	FlexComponentOffsetTypeNone FlexComponentOffsetType = "none"
+	FlexComponentOffsetTypeXs   FlexComponentOffsetType = "xs"
+	FlexComponentOffsetTypeSm   FlexComponentOffsetType = "sm"
+	FlexComponentOffsetTypeMd   FlexComponentOffsetType = "md"
+	FlexComponentOffsetTypeLg   FlexComponentOffsetType = "lg"
+	FlexComponentOffsetTypeXl   FlexComponentOffsetType = "xl"
+	FlexComponentOffsetTypeXxl  FlexComponentOffsetType = "xxl"
+)
+
 // FlexIconSizeType type
 type FlexIconSizeType string
 
@@ -359,30 +387,48 @@ type FlexComponent interface {
 
 // BoxComponent type
 type BoxComponent struct {
-	Type     FlexComponentType
-	Layout   FlexBoxLayoutType
-	Contents []FlexComponent
-	Flex     *int
-	Spacing  FlexComponentSpacingType
-	Margin   FlexComponentMarginType
+	Type            FlexComponentType
+	Layout          FlexBoxLayoutType
+	Contents        []FlexComponent
+	Flex            *int
+	Spacing         FlexComponentSpacingType
+	Margin          FlexComponentMarginType
+	Width           string
+	Height          string
+	CornerRadius    FlexComponentCornerRadiusType
+	BackgroundColor string `json:"backgroundColor,omitempty"`
+	BorderWidth     string `json:"borderWidth,omitempty"`
+	BorderColor     string `json:"borderColor,omitempty"`
 }
 
 // MarshalJSON method of BoxComponent
 func (c *BoxComponent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type     FlexComponentType        `json:"type"`
-		Layout   FlexBoxLayoutType        `json:"layout"`
-		Contents []FlexComponent          `json:"contents"`
-		Flex     *int                     `json:"flex,omitempty"`
-		Spacing  FlexComponentSpacingType `json:"spacing,omitempty"`
-		Margin   FlexComponentMarginType  `json:"margin,omitempty"`
+		Type            FlexComponentType             `json:"type"`
+		Layout          FlexBoxLayoutType             `json:"layout"`
+		Contents        []FlexComponent               `json:"contents"`
+		Flex            *int                          `json:"flex,omitempty"`
+		Spacing         FlexComponentSpacingType      `json:"spacing,omitempty"`
+		Margin          FlexComponentMarginType       `json:"margin,omitempty"`
+		Width           string                        `json:"width,omitempty"`
+		Height          string                        `json:"height,omitempty"`
+		CornerRadius    FlexComponentCornerRadiusType `json:"cornerRadius,omitempty"`
+		BackgroundColor string                        `json:"backgroundColor,omitempty"`
+		BorderWidth     string                        `json:"borderWidth,omitempty"`
+		BorderColor     string                        `json:"borderColor,omitempty"`
 	}{
-		Type:     FlexComponentTypeBox,
-		Layout:   c.Layout,
-		Contents: c.Contents,
-		Flex:     c.Flex,
-		Spacing:  c.Spacing,
-		Margin:   c.Margin,
+		Type:            FlexComponentTypeBox,
+		Layout:          c.Layout,
+		Contents:        c.Contents,
+		Flex:            c.Flex,
+		Spacing:         c.Spacing,
+		Margin:          c.Margin,
+		Width:           c.Width,
+		Height:          c.Height,
+		CornerRadius:    c.CornerRadius,
+		BackgroundColor: c.BackgroundColor,
+		BorderWidth:     c.BorderWidth,
+		BorderColor:     c.BorderColor,
 	})
 }
 
@@ -547,51 +593,63 @@ func (c *SpacerComponent) MarshalJSON() ([]byte, error) {
 
 // TextComponent type
 type TextComponent struct {
-	Type       FlexComponentType
-	Text       string
-	Flex       *int
-	Margin     FlexComponentMarginType
-	Size       FlexTextSizeType
-	Align      FlexComponentAlignType
-	Gravity    FlexComponentGravityType
-	Wrap       bool
-	Weight     FlexTextWeightType
-	Color      string
-	Action     TemplateAction
-	Style      FlexTextStyleType
-	Decoration FlexTextDecorationType
+	Type         FlexComponentType
+	Text         string
+	Flex         *int
+	Margin       FlexComponentMarginType
+	Size         FlexTextSizeType
+	Align        FlexComponentAlignType
+	Gravity      FlexComponentGravityType
+	Wrap         bool
+	Weight       FlexTextWeightType
+	Color        string
+	Action       TemplateAction
+	Style        FlexTextStyleType
+	Decoration   FlexTextDecorationType
+	OffsetTop    FlexComponentOffsetType
+	OffsetBottom FlexComponentOffsetType
+	OffsetStart  FlexComponentOffsetType
+	OffsetEnd    FlexComponentOffsetType
 }
 
 // MarshalJSON method of TextComponent
 func (c *TextComponent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type       FlexComponentType        `json:"type"`
-		Text       string                   `json:"text"`
-		Flex       *int                     `json:"flex,omitempty"`
-		Margin     FlexComponentMarginType  `json:"margin,omitempty"`
-		Size       FlexTextSizeType         `json:"size,omitempty"`
-		Align      FlexComponentAlignType   `json:"align,omitempty"`
-		Gravity    FlexComponentGravityType `json:"gravity,omitempty"`
-		Wrap       bool                     `json:"wrap,omitempty"`
-		Weight     FlexTextWeightType       `json:"weight,omitempty"`
-		Color      string                   `json:"color,omitempty"`
-		Action     TemplateAction           `json:"action,omitempty"`
-		Style      FlexTextStyleType        `json:"style,omitempty"`
-		Decoration FlexTextDecorationType   `json:"decoration,omitempty"`
+		Type         FlexComponentType        `json:"type"`
+		Text         string                   `json:"text"`
+		Flex         *int                     `json:"flex,omitempty"`
+		Margin       FlexComponentMarginType  `json:"margin,omitempty"`
+		Size         FlexTextSizeType         `json:"size,omitempty"`
+		Align        FlexComponentAlignType   `json:"align,omitempty"`
+		Gravity      FlexComponentGravityType `json:"gravity,omitempty"`
+		Wrap         bool                     `json:"wrap,omitempty"`
+		Weight       FlexTextWeightType       `json:"weight,omitempty"`
+		Color        string                   `json:"color,omitempty"`
+		Action       TemplateAction           `json:"action,omitempty"`
+		Style        FlexTextStyleType        `json:"style,omitempty"`
+		Decoration   FlexTextDecorationType   `json:"decoration,omitempty"`
+		OffsetTop    FlexComponentOffsetType  `json:"offsetTop,omitempty"`
+		OffsetBottom FlexComponentOffsetType  `json:"offsetBottom,omitempty"`
+		OffsetStart  FlexComponentOffsetType  `json:"offsetStart,omitempty"`
+		OffsetEnd    FlexComponentOffsetType  `json:"offsetEnd,omitempty"`
 	}{
-		Type:       FlexComponentTypeText,
-		Text:       c.Text,
-		Flex:       c.Flex,
-		Margin:     c.Margin,
-		Size:       c.Size,
-		Align:      c.Align,
-		Gravity:    c.Gravity,
-		Wrap:       c.Wrap,
-		Weight:     c.Weight,
-		Color:      c.Color,
-		Action:     c.Action,
-		Style:      c.Style,
-		Decoration: c.Decoration,
+		Type:         FlexComponentTypeText,
+		Text:         c.Text,
+		Flex:         c.Flex,
+		Margin:       c.Margin,
+		Size:         c.Size,
+		Align:        c.Align,
+		Gravity:      c.Gravity,
+		Wrap:         c.Wrap,
+		Weight:       c.Weight,
+		Color:        c.Color,
+		Action:       c.Action,
+		Style:        c.Style,
+		Decoration:   c.Decoration,
+		OffsetTop:    c.OffsetTop,
+		OffsetBottom: c.OffsetBottom,
+		OffsetStart:  c.OffsetStart,
+		OffsetEnd:    c.OffsetEnd,
 	})
 }
 
